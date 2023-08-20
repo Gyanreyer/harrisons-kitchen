@@ -1,3 +1,10 @@
 ---
+import { getSupabaseClient } from "../utils/supabase";
+
 export const prerender = false;
+
+const supabase = await getSupabaseClient();
+const recipes = await supabase.from("recipes").select("*");
 ---
+
+<div>{recipes.data?.map((recipe) => <div>{JSON.stringify(recipe)}</div>)}</div>
