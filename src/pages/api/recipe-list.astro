@@ -1,10 +1,10 @@
 ---
-import { getSupabaseClient } from "../../utils/supabase";
+import { getRecipeList } from "../../supabase/recipes";
 
 export const prerender = false;
 
-const supabase = await getSupabaseClient();
-const recipes = await supabase.from("recipes").select("*");
+const recipes = await getRecipeList();
 ---
 
-<div>{recipes.data?.map((recipe) => <div>{JSON.stringify(recipe)}</div>)}</div>
+<h1>Recipes!</h1>
+<ul>{recipes?.map((recipe) => <li>{JSON.stringify(recipe)}</li>)}</ul>
