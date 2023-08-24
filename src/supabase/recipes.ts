@@ -1,21 +1,41 @@
+import type { User } from "@supabase/supabase-js";
+
+import type { Database } from "./database.types";
+
 import { getSupabaseClient } from "./client";
+import { ensureAccountHasHousehold } from "./households";
 
-interface Recipe {
-  id: string
-  created_at: string;
-  name: string
-  effort_level: number;
-  estimated_cook_time: number;
-  last_used?: string;
-  season_start_date?: string;
-  season_end_date?: string;
-}
+export type Recipe = Database["public"]["Tables"]["recipes"]["Row"];
 
-const RECIPES_TABLENAME = "recipes" as const;
+export const getRecipeList = async (user: User): Promise<Recipe[]> => {
+  const householdID = await ensureAccountHasHousehold(user);
 
-export const getRecipeList = async () => {
-  const client = getSupabaseClient();
-  const { data, error } = await client.from(RECIPES_TABLENAME).select();
-  if (error) throw error;
-  return data as Recipe[];
+  const supabase = getSupabaseClient();
+  const { data: recipes, error } = await supabase.from("recipes").select("*").eq("household_id", householdID).order("created_at", {
+    ascending: false,
+  });
+
+  if (error) {
+    throw error;
+  }
+
+  return recipes || [];
 };
+
+export const createRecipe = async (user: User, recipe: { name: string, effort_level: number, estimated_cook_time: number }) => {
+  const householdID = await ensureAccountHasHousehold(user);
+
+  const supabase = getSupabaseClient();
+  const { data: createdRecipe, error } = await supabase.from("recipes").insert({
+    name: recipe.name,
+    effort_level: recipe.effort_level,
+    estimated_cook_time: recipe.estimated_cook_time,
+    household_id: householdID,
+  }).select().single();
+
+  if (error) {
+    throw error;
+  }
+
+  return createdRecipe;
+}

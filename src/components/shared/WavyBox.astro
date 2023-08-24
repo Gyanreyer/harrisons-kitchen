@@ -1,0 +1,47 @@
+---
+import type { HTMLAttributes, HTMLTag } from "astro/types";
+
+import Curve from "./Curve.astro";
+
+export interface Props<TTag extends HTMLTag> {
+  hasBottomCurve?: boolean;
+  tag?: TTag;
+  props?: HTMLAttributes<TTag>;
+}
+
+const { hasBottomCurve = false, tag = "div", ...props } = Astro.props;
+
+const Tag = tag;
+---
+
+<Tag {...props} class:list={["wavy-box", props.class]}>
+  <Curve class="top" />
+  <slot />
+  {hasBottomCurve ? <Curve class="bottom" /> : null}
+</Tag>
+<style is:inline>
+  .wavy-box {
+    position: relative;
+    background-color: var(--background);
+    padding: 1.5rem;
+    --curve-height: max(3.5rem, 15vw);
+    margin-top: var(--curve-height);
+  }
+
+  .wavy-box svg:is(.top, .bottom) {
+    position: absolute;
+    width: 100%;
+    height: var(--curve-height);
+    left: 0;
+    color: var(--background);
+  }
+
+  .wavy-box svg.top {
+    bottom: 100%;
+  }
+
+  .wavy-box svg.bottom {
+    top: 100%;
+    transform: scaleY(-1);
+  }
+</style>

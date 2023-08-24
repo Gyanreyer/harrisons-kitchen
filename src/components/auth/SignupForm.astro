@@ -1,0 +1,13 @@
+<form id="auth-form" hx-post="/api/signup" hx-target="this">
+  <input type="text" id="email" name="email" placeholder="email" />
+  <input type="password" id="password" name="password" placeholder="password" />
+  <button type="submit">Sign up</button>
+  <a
+    href="/login"
+    hx-get="/login"
+    hx-push-url="true"
+    hx-select="#auth-form"
+    hx-target="#auth-form"
+    hx-swap="outerHTML">Switch to Login</a
+  >
+</form>

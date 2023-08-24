@@ -1,0 +1,37 @@
+---
+import { AuthError } from "@supabase/supabase-js";
+import { createRecipe, Recipe } from "../../supabase/recipes";
+import { getLoggedInUser } from "../../supabase/auth";
+
+import RecipeListItem from "../../components/recipeList/RecipeListItem.astro";
+
+let createdRecipe: Recipe;
+
+const formData = await Astro.request.formData();
+const name = formData.get("name") as string;
+const effort_level = Number(formData.get("effort_level"));
+const estimated_cook_time = Number(formData.get("estimated_cook_time"));
+
+try {
+  const user = await getLoggedInUser(Astro.cookies);
+  if (!user) {
+    return new Response("You must be logged in to create a recipe", {
+      status: 401,
+    });
+  }
+
+  createdRecipe = await createRecipe(user, {
+    name,
+    effort_level,
+    estimated_cook_time,
+  });
+} catch (e) {
+  if (e instanceof AuthError) {
+    return new Response(e.message, { status: 401 });
+  } else {
+    return new Response("An error occurred", { status: 500 });
+  }
+}
+---
+
+<RecipeListItem recipe={createdRecipe} />

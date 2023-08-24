@@ -1,0 +1,14 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+import LoginForm from "../components/auth/LoginForm.astro";
+import { getIsLoggedIn } from "../supabase/auth";
+
+if (getIsLoggedIn(Astro.cookies)) {
+  return Astro.redirect("/recipes");
+}
+---
+
+<Layout title="Log In">
+  <LoginForm />
+</Layout>

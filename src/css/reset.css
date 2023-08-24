@@ -1,0 +1,46 @@
+:root {
+  --primary-color: #332413;
+  --secondary-color: #f4eee4;
+  --background: #e7685d;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+html {
+  background-color: var(--secondary-color);
+}
+
+body {
+  background-image: url("/images/bg-pattern.png");
+  background-size: 720px;
+  background-repeat: repeat;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.button {
+  display: block;
+  border-radius: 1.4rem;
+  padding: 0.6rem;
+  width: 100%;
+  text-align: center;
+}
+
+.button.primary {
+  background-color: var(--primary-color);
+  color: var(--secondary-color);
+}
+.button.secondary {
+  background-color: var(--secondary-color);
+  color: var(--primary-color);
+}

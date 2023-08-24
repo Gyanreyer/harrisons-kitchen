@@ -1,0 +1,39 @@
+---
+import RecipeListItem from "../components/recipeList/RecipeListItem.astro";
+import Layout from "../layouts/Layout.astro";
+
+import { getLoggedInUser } from "../supabase/auth";
+import { Recipe, getRecipeList } from "../supabase/recipes";
+
+let recipes: Recipe[] = [];
+
+try {
+  const user = await getLoggedInUser(Astro.cookies);
+  if (!user) {
+    return Astro.redirect("/");
+  }
+  recipes = await getRecipeList(user);
+} catch (e) {
+  return new Response("Something went wrong", {
+    status: 500,
+  });
+}
+---
+
+<Layout title="Recipes">
+  <button hx-post="/api/logout">Logout</button>
+  <h1>Recipes</h1>
+  <ul id="recipes-list">
+    {recipes.map((recipe) => <RecipeListItem recipe={recipe} />)}
+  </ul>
+  <form
+    hx-post="/api/create-recipe"
+    hx-target="#recipes-list"
+    hx-swap="afterbegin"
+  >
+    <input type="text" name="name" placeholder="Name" />
+    <input type="number" name="effort_level" value="3" />
+    <input type="number" name="estimated_cook_time" value="30" />
+    <button type="submit">Create</button>
+  </form>
+</Layout>

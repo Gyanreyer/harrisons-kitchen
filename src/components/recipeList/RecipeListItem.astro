@@ -1,0 +1,13 @@
+---
+import type { Recipe } from "../../supabase/recipes";
+
+export interface Props {
+  recipe: Recipe;
+}
+
+const { recipe } = Astro.props;
+---
+
+<li>
+  {recipe.name}
+</li>
