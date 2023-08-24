@@ -1,8 +1,11 @@
 ---
 import Layout from "../layouts/Layout.astro";
 
+import logo from "~/assets/images/hk-logo.png";
+
 import LoginForm from "../components/auth/LoginForm.astro";
 import { getIsLoggedIn } from "../supabase/auth";
+import WavyBox from "../components/shared/WavyBox.astro";
 
 if (getIsLoggedIn(Astro.cookies)) {
   return Astro.redirect("/recipes");
@@ -10,5 +13,45 @@ if (getIsLoggedIn(Astro.cookies)) {
 ---
 
 <Layout title="Log In">
-  <LoginForm />
+  <header>
+    <img
+      class="logo"
+      src={logo.src}
+      width={logo.width}
+      height={logo.height}
+      alt="Harrison's Kitchen"
+    />
+  </header>
+  <WavyBox tag="main">
+    <LoginForm />
+  </WavyBox>
 </Layout>
+<style>
+  header {
+    z-index: 1;
+    padding-top: 8rem;
+    --logo-width: min(max(16rem, 40vw), 24rem);
+    padding-left: var(--logo-width);
+  }
+
+  header img {
+    width: var(--logo-width);
+    height: auto;
+    margin-bottom: calc(var(--logo-width) / -2);
+    align-self: flex-start;
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+  }
+
+  main {
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+</style>

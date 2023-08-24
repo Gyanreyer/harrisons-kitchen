@@ -54,7 +54,9 @@ export const logout = async (cookies: AstroCookies) => {
 
   if (error) throw error;
 
-  cookies.delete(LOGIN_TOKEN_COOKIE_NAME);
+  cookies.delete(LOGIN_TOKEN_COOKIE_NAME, {
+    path: "/",
+  });
 };
 
 export const getLoggedInUser = async (cookies: AstroCookies) => {

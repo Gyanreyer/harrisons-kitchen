@@ -1,0 +1,21 @@
+---
+export interface Props {
+  apiURL: string;
+}
+
+const { apiURL } = Astro.props;
+---
+
+<form id="auth-form" hx-post={apiURL} hx-target="this">
+  <slot />
+</form>
+<style>
+  #auth-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    width: 100%;
+  }
+</style>
