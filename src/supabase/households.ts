@@ -1,16 +1,16 @@
+import type { Account } from "./accounts";
 import { getSupabaseClient } from "./client";
-import type { User } from "@supabase/supabase-js";
 
-export const ensureAccountHasHousehold = async (user: User, defaultHouseholdID?: number) => {
-  const supabase = getSupabaseClient();
-
-  const fetchCurrentAccountResponse = await supabase.from("accounts").select("household_id").eq("user_id", user.id).maybeSingle();
-
-  if (fetchCurrentAccountResponse.data?.household_id) {
-    return fetchCurrentAccountResponse.data.household_id;
-  } else if (fetchCurrentAccountResponse.error) {
-    throw fetchCurrentAccountResponse.error;
+export const ensureAccountHasHousehold = async (account: Account, defaultHouseholdID?: number) => {
+  if (!account) {
+    throw new Error("ensureAccountHasHousehold: No account provided");
   }
+
+  if (account.household_id) {
+    return account.household_id;
+  }
+
+  const supabase = getSupabaseClient();
 
   let householdID = defaultHouseholdID;
 
@@ -27,12 +27,12 @@ export const ensureAccountHasHousehold = async (user: User, defaultHouseholdID?:
   }
 
   // Update the account with the household ID, or create a new account if one doesn't exist
-  const upsertHouseholdIDResponse = await supabase.from("accounts").upsert({
-    user_id: user.id,
+  const updateHouseholdIDResponse = await supabase.from("accounts").update({
+    id: account.id,
     household_id: defaultHouseholdID
   });
-  if (upsertHouseholdIDResponse.error) {
-    throw upsertHouseholdIDResponse.error;
+  if (updateHouseholdIDResponse.error) {
+    throw updateHouseholdIDResponse.error;
   }
 
   return householdID;

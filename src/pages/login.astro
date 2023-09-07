@@ -1,29 +1,23 @@
 ---
 import Layout from "../layouts/Layout.astro";
 
-import logo from "~/assets/images/hk-logo.png";
-
 import LoginForm from "../components/auth/LoginForm.astro";
-import { getIsLoggedIn } from "../supabase/auth";
 import WavyBox from "../components/shared/WavyBox.astro";
-
-if (getIsLoggedIn(Astro.cookies)) {
-  return Astro.redirect("/recipes");
-}
+import LogoImage from "../components/shared/LogoImage.astro";
 ---
 
 <Layout title="Log In">
   <header>
-    <img
-      class="logo"
-      src={logo.src}
-      width={logo.width}
-      height={logo.height}
-      alt="Harrison's Kitchen"
-    />
+    <LogoImage />
   </header>
-  <WavyBox tag="main">
+  <WavyBox
+    tag="main"
+    props={{
+      id: "wavy-box",
+    }}
+  >
     <LoginForm />
+    <a href="/signup">Switch to Signup</a>
   </WavyBox>
 </Layout>
 <style>

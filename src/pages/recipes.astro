@@ -2,17 +2,20 @@
 import RecipeListItem from "../components/recipeList/RecipeListItem.astro";
 import Layout from "../layouts/Layout.astro";
 
-import { getLoggedInUser } from "../supabase/auth";
-import { Recipe, getRecipeList } from "../supabase/recipes";
+import { getRecipeList } from "../supabase/recipes";
+import type { Recipe } from "../supabase/recipes";
+
+import { logout } from "../supabase/auth";
 
 let recipes: Recipe[] = [];
 
 try {
-  const user = await getLoggedInUser(Astro.cookies);
-  if (!user) {
+  const account = await Astro.locals.getAccount();
+  if (!account) {
+    logout(Astro.cookies);
     return Astro.redirect("/");
   }
-  recipes = await getRecipeList(user);
+  recipes = await getRecipeList(account);
 } catch (e) {
   return new Response("Something went wrong", {
     status: 500,

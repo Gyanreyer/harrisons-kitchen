@@ -9,7 +9,7 @@ export interface Props<TTag extends HTMLTag> {
   props?: HTMLAttributes<TTag>;
 }
 
-const { hasBottomCurve = false, tag = "div", ...props } = Astro.props;
+const { hasBottomCurve = false, tag = "div", props } = Astro.props;
 
 const Tag = tag;
 ---
@@ -22,7 +22,7 @@ const Tag = tag;
 <style is:inline>
   .wavy-box {
     position: relative;
-    background-color: var(--background);
+    background-color: var(--accent-color);
     padding: 1.5rem;
     --curve-height: max(3.5rem, 15vw);
     margin-top: var(--curve-height);
@@ -33,7 +33,7 @@ const Tag = tag;
     width: 100%;
     height: var(--curve-height);
     left: 0;
-    color: var(--background);
+    color: var(--accent-color);
   }
 
   .wavy-box svg.top {

@@ -1,14 +1,9 @@
 ---
 import Layout from "../layouts/Layout.astro";
 
-import logo from "~/assets/images/hk-logo.png";
-
 import { getIsLoggedIn } from "../supabase/auth";
 import WavyBox from "../components/shared/WavyBox.astro";
-
-if (getIsLoggedIn(Astro.cookies)) {
-  return Astro.redirect("/recipes");
-}
+import LogoImage from "../components/shared/LogoImage.astro";
 ---
 
 <Layout title="Harrison's Kitchen">
@@ -17,15 +12,14 @@ if (getIsLoggedIn(Astro.cookies)) {
       <h1>What's for dinner?</h1>
       <p>The kitchen that meal plans for you.</p>
     </hgroup>
-    <img
-      class="logo"
-      src={logo.src}
-      width={logo.width}
-      height={logo.height}
-      alt="Harrison's Kitchen"
-    />
+    <LogoImage />
   </header>
-  <WavyBox tag="main">
+  <WavyBox
+    tag="main"
+    props={{
+      id: "wavy-box",
+    }}
+  >
     <a href="/login" class="button primary">Sign In</a>
     <a href="/signup" class="button secondary">Sign Up</a>
   </WavyBox>

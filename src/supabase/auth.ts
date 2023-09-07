@@ -60,7 +60,7 @@ export const logout = async (cookies: AstroCookies) => {
 };
 
 export const getLoggedInUser = async (cookies: AstroCookies) => {
-  const token = cookies.get(LOGIN_TOKEN_COOKIE_NAME).value;
+  const token = cookies.get(LOGIN_TOKEN_COOKIE_NAME)?.value;
 
   if (!token) {
     return null;

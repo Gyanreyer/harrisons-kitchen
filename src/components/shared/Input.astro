@@ -1,0 +1,21 @@
+---
+import type { HTMLAttributes } from "astro/types";
+export interface Props extends HTMLAttributes<"input"> {}
+
+const { type = "text", ...props } = Astro.props;
+---
+
+<input type={type} {...props} />
+<style>
+  input {
+    background-color: white;
+    color: var(--primary-color);
+    border: none;
+    border-radius: 1.5rem;
+    padding: 1rem;
+  }
+
+  input::placeholder {
+    color: var(--accent-color);
+  }
+</style>

@@ -1,6 +1,7 @@
 ---
 import { AuthError } from "@supabase/supabase-js";
-import { createRecipe, Recipe } from "../../supabase/recipes";
+import { createRecipe } from "../../supabase/recipes";
+import type { Recipe } from "../../supabase/recipes";
 import { getLoggedInUser } from "../../supabase/auth";
 
 import RecipeListItem from "../../components/recipeList/RecipeListItem.astro";
@@ -13,14 +14,14 @@ const effort_level = Number(formData.get("effort_level"));
 const estimated_cook_time = Number(formData.get("estimated_cook_time"));
 
 try {
-  const user = await getLoggedInUser(Astro.cookies);
-  if (!user) {
+  const account = await Astro.locals.getAccount();
+  if (!account) {
     return new Response("You must be logged in to create a recipe", {
       status: 401,
     });
   }
 
-  createdRecipe = await createRecipe(user, {
+  createdRecipe = await createRecipe(account, {
     name,
     effort_level,
     estimated_cook_time,

@@ -6,7 +6,7 @@ export interface Props {
 const { apiURL } = Astro.props;
 ---
 
-<form id="auth-form" hx-post={apiURL} hx-target="this">
+<form id="auth-form" hx-post={apiURL}>
   <slot />
 </form>
 <style>
@@ -16,6 +16,20 @@ const { apiURL } = Astro.props;
     align-items: center;
     justify-content: center;
     gap: 1rem;
+    width: 100%;
+    max-width: 36ch;
+  }
+
+  #auth-form :global(.row) {
+    display: flex;
+    gap: 1rem;
+  }
+
+  #auth-form :global(.row > *) {
+    flex: 1;
+  }
+
+  #auth-form > :global(*) {
     width: 100%;
   }
 </style>

@@ -1,17 +1,10 @@
 ---
+import Input from "../shared/Input.astro";
 import AuthForm from "./AuthForm.astro";
 ---
 
 <AuthForm apiURL="/api/login">
-  <input type="text" id="email" name="email" placeholder="email" />
-  <input type="password" id="password" name="password" placeholder="password" />
+  <Input id="email" name="email" placeholder="Email" />
+  <Input type="password" id="password" name="password" placeholder="Password" />
   <button type="submit">Log in</button>
-  <a
-    href="/signup"
-    hx-get="/signup"
-    hx-replace-url="true"
-    hx-select="#auth-form"
-    hx-target="#auth-form"
-    hx-swap="outerHTML">Switch to Signup</a
-  >
 </AuthForm>

@@ -2,13 +2,21 @@
 import Layout from "../layouts/Layout.astro";
 
 import SignupForm from "../components/auth/SignupForm.astro";
-import { getIsLoggedIn } from "../supabase/auth";
-
-if (getIsLoggedIn(Astro.cookies)) {
-  return Astro.redirect("/recipes");
-}
+import LogoImage from "../components/shared/LogoImage.astro";
+import WavyBox from "../components/shared/WavyBox.astro";
 ---
 
 <Layout title="Sign Up">
-  <SignupForm />
+  <header>
+    <LogoImage />
+  </header>
+  <WavyBox
+    tag="main"
+    props={{
+      id: "wavy-box",
+    }}
+  >
+    <SignupForm />
+    <a href="/login">Switch to Login</a>
+  </WavyBox>
 </Layout>
