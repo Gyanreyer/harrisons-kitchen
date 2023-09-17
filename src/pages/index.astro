@@ -1,7 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
 
-import { getIsLoggedIn } from "../supabase/auth";
 import WavyBox from "../components/shared/WavyBox.astro";
 import LogoImage from "../components/shared/LogoImage.astro";
 ---
@@ -25,24 +24,38 @@ import LogoImage from "../components/shared/LogoImage.astro";
   </WavyBox>
 </Layout>
 <style>
-  header {
-    z-index: 1;
-    position: relative;
-
+  :global(html) {
     --logo-width: min(max(16rem, 40vw), 24rem);
   }
 
-  header hgroup {
-    margin: 10rem 0 3.5rem 2rem;
-    padding-left: var(--logo-width);
+  header {
+    z-index: 1;
+    position: relative;
+    display: flex;
+    flex-direction: column;
   }
 
-  header img {
+  @media screen and (min-width: 768px) {
+    header {
+      flex-direction: row-reverse;
+      justify-content: center;
+    }
+  }
+
+  header hgroup {
+    margin: 0 0 0 2rem;
+    padding-left: 0;
+  }
+
+  @media screen and (min-width: 768px) {
+    header hgroup {
+      margin: 10rem 0 3.5rem 2rem;
+    }
+  }
+
+  header :global(img) {
     width: var(--logo-width);
     height: auto;
-    position: absolute;
-    bottom: 0;
-    transform: translateY(50%);
   }
 
   body {
@@ -50,17 +63,21 @@ import LogoImage from "../components/shared/LogoImage.astro";
     flex-direction: column;
   }
 
-  main {
+  :global(main#wavy-box) {
     flex: 1;
 
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 1rem;
+    --shift-up-amt: calc(var(--curve-height) - (var(--logo-width) / 2));
+    margin-top: var(--shift-up-amt);
+    padding-top: calc((-1 * var(--shift-up-amt)) + 2rem);
   }
 
-  main a {
-    min-width: 12rem;
-    max-width: 18em;
+  @media screen and (min-width: 768px) {
+    :global(main) .button {
+      max-width: 20rem;
+    }
   }
 </style>
